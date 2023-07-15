@@ -4,12 +4,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SignUpResponse {
-	public SignUpResponse() {
-		super();
-	}
+
 
 	private String message;
 	private boolean success;
+	
+	public SignUpResponse() {
+		super();
+	}
 
 	public SignUpResponse(boolean success, String message) {
 		this.success = success;

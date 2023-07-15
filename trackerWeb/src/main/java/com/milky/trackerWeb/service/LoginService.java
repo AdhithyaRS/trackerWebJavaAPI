@@ -58,23 +58,6 @@ public class LoginService {
     		return new LoginResponse(false, email,"User Not Found. Please sign up/check e-mail id.");
     	}
     	
-
-//
-//    	MongoCollection<Document> collection = primaryMongoTemplate.getCollection("login");
-//    	AggregateIterable<Document> result = collection.aggregate(Arrays.asList(new Document("$search", 
-//  		    new Document("text", 
-//  		    new Document("query", login.getEmail())
-//  		                .append("path", Arrays.asList("email"))))));
-//    		Document document = result.first();
-//    		
-//    		System.out.println(document == null);	
-//    	if(document != null) {
-//    	 loginDB= (converter.read(Login.class,document));
-//    	}
-//    	else {
-//    		return new LoginResponse(false, login.getUserName(),"User Not Found. Please sign up.");
-//    	}
-    	
         
         	String rawPassword = login.getPassword();
             String hashedPasswordFromDB = loginFromDB.getPassword();
@@ -108,6 +91,7 @@ public class LoginService {
 		if(loginResponse.isSuccess()) {
 			signUpDB.save(new SignUp(email,code));
 			loginResponse.setMessage("verification Code sent Successfully");
+			return loginResponse;
 		}
 		loginResponse.setMessage("Error sending verification code, retry again");
 		return loginResponse;

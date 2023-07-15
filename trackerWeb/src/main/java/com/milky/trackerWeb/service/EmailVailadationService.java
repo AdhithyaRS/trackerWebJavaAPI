@@ -24,11 +24,8 @@ public class EmailVailadationService {
     private static final String EMAIL_PASSWORD = "gjnlfveswqhduqvf";
 	
 	public boolean isEmailValid(String email) {
-		// Create a Pattern object with the email regex
 		System.out.println("In regex class"+email);
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
-        
-        // Use the Matcher class to perform the validation
         return pattern.matcher(email).matches();
 		
 	}
