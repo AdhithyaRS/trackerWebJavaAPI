@@ -22,9 +22,11 @@ public class EmailVailadationService {
 	private static final String SMTP_HOST = "smtp.gmail.com";
     private static final int SMTP_PORT = 587;
     @Value("${email.username}")
-    private static String EMAIL_USERNAME;
+    private static String emailID;
     @Value("${email.password}")
-    private static String EMAIL_PASSWORD;
+    private static String applicationPassword;
+    private static final String EMAIL_USERNAME = emailID;
+    private static final String EMAIL_PASSWORD = applicationPassword;
 	
 	public boolean isEmailValid(String email) {
 		System.out.println("In regex class"+email);
