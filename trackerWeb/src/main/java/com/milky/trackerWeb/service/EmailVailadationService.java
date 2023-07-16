@@ -28,6 +28,7 @@ public class EmailVailadationService {
     private static final String EMAIL_USERNAME = emailID;
     private static final String EMAIL_PASSWORD = applicationPassword;
     
+    
 	
 	public boolean isEmailValid(String email) {
 		System.out.println("In regex class"+email);
