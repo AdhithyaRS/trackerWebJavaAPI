@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.milky.trackerWeb.model.Product;
 import com.milky.trackerWeb.repository.ProductCustomRepo;
+import com.milky.trackerWeb.response.MainResponse;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -37,7 +38,12 @@ public class ProductService implements ProductCustomRepo {
         FindIterable<Document> result = collection.find(query);
 
         result.forEach(doc -> product.add(converter.read(Product.class, doc)));
-
+        System.out.println(product);
         return product;
     }
+
+	public MainResponse save(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

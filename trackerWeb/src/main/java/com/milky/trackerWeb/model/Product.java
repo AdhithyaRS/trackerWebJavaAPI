@@ -1,13 +1,14 @@
 package com.milky.trackerWeb.model;
 
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Document(collection = "product")
 @Component
@@ -16,18 +17,25 @@ import org.springframework.stereotype.Component;
 })
 public class Product {
 	@Id
-    private ObjectId _id;
+	@JsonProperty("_id")
+    private String _id;
 	@Field("email")
+	@JsonProperty("email")
 	private String email;
 	@Field("userName")
+	@JsonProperty("userName")
 	private String userName;
 	@Field("productName")
+	@JsonProperty("productName")
 	private String productName;
 	@Field("type")
+	@JsonProperty("type")
 	private String type;
 	@Field("location")
+	@JsonProperty("location")
 	private String location;
 	@Field("quantity")
+	@JsonProperty("quantity")
 	private int quantity;
 	
 	public String getUname() {

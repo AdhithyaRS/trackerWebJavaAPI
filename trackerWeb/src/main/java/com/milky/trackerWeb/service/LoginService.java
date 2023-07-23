@@ -63,8 +63,11 @@ public class LoginService {
             String hashedPasswordFromDB = loginFromDB.getPassword();
             
             if (passwordEncoder.matches(rawPassword, hashedPasswordFromDB)) {
-            	
-                return new LoginResponse(true, username,"password Verified.");
+            	loginResponse.setEmail(email);
+            	loginResponse.setSuccess(true);
+            	loginResponse.setUserName(username);
+            	loginResponse.setMessage("password Verified.");
+                return loginResponse;
                 
             } else {
                 return new LoginResponse(false, username,"Incorrect password.");
@@ -75,7 +78,7 @@ public class LoginService {
 	public LoginResponse passWordReset(Login login) {
 		// TODO Auto-generated method stub
     	String email = login.getEmail();
-
+    	System.out.println("In passWordReset"+ email);
     	try {
     		loginFromDB= loginDB.findById(login.getEmail()).get();
             email= loginFromDB.getEmail();
@@ -83,16 +86,20 @@ public class LoginService {
     	catch(NoSuchElementException e){
     		return new LoginResponse(false, email,"User Not Found. Please sign up/check e-mail id.");
     	}
+    	
     	if(signUpDB.existsById(email)) {
 			signUpDB.deleteById(email);
 		}
+    	System.out.println("In passWordReset mid "+ email);
     	int code= random.nextInt(900000) + 100000;
 		loginResponse.setSuccess(emailVailadationService.sendVerificationEmail(email, code));
+		System.out.println("In passWordReset middle"+ email);
 		if(loginResponse.isSuccess()) {
 			signUpDB.save(new SignUp(email,code));
 			loginResponse.setMessage("verification Code sent Successfully");
 			return loginResponse;
 		}
+		System.out.println("In passWordReset end"+ email);
 		loginResponse.setMessage("Error sending verification code, retry again");
 		return loginResponse;
 		

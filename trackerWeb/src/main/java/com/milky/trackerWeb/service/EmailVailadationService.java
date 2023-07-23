@@ -21,15 +21,17 @@ public class EmailVailadationService {
 	private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 	private static final String SMTP_HOST = "smtp.gmail.com";
     private static final int SMTP_PORT = 587;
-    @Value("${email.username}")
-    private static String emailID;
-    @Value("${email.password}")
-    private static String applicationPassword;
-    private static final String EMAIL_USERNAME = emailID;
-    private static final String EMAIL_PASSWORD = applicationPassword;
+    private final String EMAIL_USERNAME;
+    private final String EMAIL_PASSWORD;
     
+    public EmailVailadationService(@Value("${email.username}") String eMAIL_USERNAME, @Value("${email.password}") String eMAIL_PASSWORD) {
+		super();
+		EMAIL_USERNAME = eMAIL_USERNAME;
+		EMAIL_PASSWORD = eMAIL_PASSWORD;
+	}
     
-	
+
+
 	public boolean isEmailValid(String email) {
 		System.out.println("In regex class"+email);
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
@@ -42,7 +44,7 @@ public class EmailVailadationService {
     	String emailSubject = "Email Verification";
         String emailContent = "Your verification code is: " + verificationCode + "\nExpiration time: 5 minutes";
 
-
+        System.out.println("In sendVerificationEmail");
         Properties properties = new Properties();
         properties.put("mail.smtp.host", SMTP_HOST);
         properties.put("mail.smtp.port", SMTP_PORT);
@@ -55,14 +57,14 @@ public class EmailVailadationService {
             }
         });
 
-
+        
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(EMAIL_USERNAME));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
             message.setSubject(emailSubject);
             message.setText(emailContent);
-
+            System.out.println("In sendVerificationEmail Mid");
             Transport.send(message);
             System.out.println("Verification email sent successfully.");
             return true;

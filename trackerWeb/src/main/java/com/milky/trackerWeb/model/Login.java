@@ -5,40 +5,43 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Document(collection = "login")
 @Component
 public class Login {
-	
 
-	@Override
-	public String toString() {
-		return "Login [userName=" + userName + ", password=" + password + ", email=" + email + "]";
-	}
 
-	
 	@Field("userName")
+	@JsonProperty("userName")
 	private String userName;
 	@Field("password")
+	@JsonProperty("password")
 	private String password;
 	@Id
+	@JsonProperty("email")
 	private String email;
+	@JsonProperty("reset")
+	private boolean reset;
 
 	public Login() {
 		super();
 	}
-	public Login(String userName, String password) {
-		super();
-		this.userName = userName;
-		this.password = password;
+	@Override
+	public String toString() {
+		return "Login [userName=" + userName + ", password=" + password + ", email=" + email + ", reset=" + reset + "]";
 	}
-	public Login(String userName, String password, String email) {
-		super();
-		this.userName = userName;
-		this.password = password;
-		this.email=email;
-	}
+
 	
+	public boolean isReset() {
+		return reset;
+	}
+
+	public void setReset(boolean reset) {
+		this.reset = reset;
+	}
+
 	public String getEmail() {
 		return email;
 	}

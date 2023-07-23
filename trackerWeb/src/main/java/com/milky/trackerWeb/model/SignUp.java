@@ -10,18 +10,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Document(collection = "emailVerification")
 @Component
 public class SignUp {
 
 	@Id
+	@JsonProperty("email")
 	private String email;
 	@Field("verificationCode")
+	@JsonProperty("verificationCode")
 	private int verificationCode;
 	@Indexed(expireAfterSeconds =  300) // TTL index with 300 seconds (5 minutes)
     @Field("expirationDate")
     private Date expirationDate;
+	@JsonProperty("password")
 	private String password;
+	@JsonProperty("userName")
 	private String userName;
 
 	@Override

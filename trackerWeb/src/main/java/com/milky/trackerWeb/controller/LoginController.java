@@ -1,6 +1,12 @@
 package com.milky.trackerWeb.controller;
 
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,38 +14,62 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.milky.trackerWeb.model.Login;
 import com.milky.trackerWeb.model.SignUp;
-import com.milky.trackerWeb.response.LoginResponse;
-import com.milky.trackerWeb.response.SignUpResponse;
+import com.milky.trackerWeb.response.MainResponse;
+import com.milky.trackerWeb.service.JwtUtils;
 import com.milky.trackerWeb.service.LoginService;
+
+
 
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
 	
+	private LoginService loginService;
+    private MainResponse mainResponse;
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    public LoginController(LoginService loginService, MainResponse mainResponse, JwtUtils jwtUtils) {
+        this.loginService = loginService;
+        this.mainResponse = mainResponse;
+        this.jwtUtils = jwtUtils;
+    }
 	
-	@Autowired
-	LoginService loginService;
-	
-	@PostMapping("/login")
-	@CrossOrigin
-    public LoginResponse check(@RequestBody Login login)
+	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MainResponse> check(@RequestBody Login login, HttpServletResponse response)
     {
 		System.out.println(login.toString());
-        return loginService.findByEmail(login);
+		mainResponse = loginService.findByEmail(login);
+		
+		if (mainResponse.isSuccess()) {
+			String token =jwtUtils.generateToken(mainResponse.getEmail() , "user");
+
+			
+	        Cookie jwtCookie = new Cookie("jwt_token", token);
+	        jwtCookie.setHttpOnly(true);
+
+	        
+	        jwtCookie.setPath("/");
+
+	        
+	        response.addCookie(jwtCookie);
+			
+		}
+           
+        return ResponseEntity.ok(mainResponse);
+        
     }
-	@PostMapping("/passwordreset")
-	@CrossOrigin
-    public LoginResponse reset(@RequestBody Login login)
+	@PostMapping(value = "/passwordreset", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MainResponse> reset(@RequestBody Login login)
     {
 		System.out.println(login.toString());
-        return loginService.passWordReset(login);
+		return ResponseEntity.ok(loginService.passWordReset(login));
     }
-	@PostMapping("/verifycode")
-	@CrossOrigin
-    public SignUpResponse verifycode(@RequestBody SignUp signUp)
+	@PostMapping(value = "/verifycode", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MainResponse> verifycode(@RequestBody SignUp signUp)
     {
 		System.out.println(signUp.toString());
-        return loginService.verifycode(signUp);
+		return ResponseEntity.ok(loginService.verifycode(signUp));
     }
 }

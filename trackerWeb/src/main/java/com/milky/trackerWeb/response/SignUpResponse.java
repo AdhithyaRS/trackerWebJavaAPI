@@ -2,11 +2,14 @@ package com.milky.trackerWeb.response;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Component
-public class SignUpResponse {
+public class SignUpResponse extends MainResponse{
 
-
+	@JsonProperty("message")
 	private String message;
+	@JsonProperty("success")
 	private boolean success;
 	
 	public SignUpResponse() {
