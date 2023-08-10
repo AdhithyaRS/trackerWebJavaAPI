@@ -1,8 +1,8 @@
 package com.milky.trackerWeb.controller;
 
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,17 +24,12 @@ import com.milky.trackerWeb.service.LoginService;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
-	
+	@Autowired
 	private LoginService loginService;
+	@Autowired
     private MainResponse mainResponse;
+	@Autowired
     private JwtUtils jwtUtils;
-
-    @Autowired
-    public LoginController(LoginService loginService, MainResponse mainResponse, JwtUtils jwtUtils) {
-        this.loginService = loginService;
-        this.mainResponse = mainResponse;
-        this.jwtUtils = jwtUtils;
-    }
 	
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MainResponse> check(@RequestBody Login login, HttpServletResponse response)

@@ -31,12 +31,14 @@ public class ProductController {
 	@GetMapping(value = "/dashboard/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> getAllProduct(@PathVariable String email, @CookieValue(value = "jwt_token", required = true) String jwtToken){
 		try {
+			System.out.println("In fetch Products");
             if (!jwtUtils.validateToken(jwtToken)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
             List<Product> products = productService.findAllByEmail(email);
             return ResponseEntity.ok(products);
         } catch (IllegalArgumentException ex) {
+        	System.out.println("In dashboard catch block");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 	}
