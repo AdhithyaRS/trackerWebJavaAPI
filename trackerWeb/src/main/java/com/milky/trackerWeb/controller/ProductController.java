@@ -20,7 +20,7 @@ import com.milky.trackerWeb.service.JwtUtils;
 import com.milky.trackerWeb.service.ProductService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ProductController {
 	@Autowired
 	ProductService productService;
@@ -31,6 +31,7 @@ public class ProductController {
 	@GetMapping(value = "/dashboard/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> getAllProduct(@PathVariable String email, @CookieValue(value = "jwt_token", required = true) String jwtToken){
 		try {
+			System.out.println("Token : "+jwtToken);
 			System.out.println("In fetch Products");
             if (!jwtUtils.validateToken(jwtToken)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -22,7 +22,7 @@ import com.milky.trackerWeb.service.LoginService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class LoginController {
 	@Autowired
 	private LoginService loginService;
