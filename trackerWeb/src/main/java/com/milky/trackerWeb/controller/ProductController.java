@@ -44,6 +44,8 @@ public class ProductController {
         }
 	}
 	
+	
+	
 	@PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     public MainResponse update(@RequestBody Product product)
     {
