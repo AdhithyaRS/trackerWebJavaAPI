@@ -1,19 +1,16 @@
 package com.milky.trackerWeb.response;
 
-import org.springframework.stereotype.Component;
 
-@Component
-public class MainResponse {
 
-	public boolean isSuccess() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+import com.milky.trackerWeb.model.Login.UserType;
 
-	public String getEmail() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+public interface MainResponse {
+
+	boolean isSuccess();
+
+	String getEmail();
+	UserType getUserType();
+	int getUserID();
 	
 	
 }

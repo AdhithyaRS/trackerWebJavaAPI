@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.milky.trackerWeb.model.Login.UserType;
 
 @Document(collection = "emailVerification")
 @Component
@@ -29,13 +30,33 @@ public class SignUp {
 	private String password;
 	@JsonProperty("userName")
 	private String userName;
+	@JsonProperty("userType")
+    private UserType userType;
+	@JsonProperty("userID")
+	private String userID;
+	
+	
+	public String getUserID() {
+		return userID;
+	}
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
 
 	@Override
 	public String toString() {
 		return "SignUp [email=" + email + ", verificationCode=" + verificationCode + ", expirationDate="
 				+ expirationDate + ", password=" + password + ", userName=" + userName + "]";
 	}
-
+	
+	public UserType getUserType() {
+		return userType;
+	}
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+	
 	public Date getExpirationDate() {
 		return expirationDate;
 	}

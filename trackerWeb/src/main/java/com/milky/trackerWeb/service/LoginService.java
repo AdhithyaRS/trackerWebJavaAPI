@@ -57,21 +57,25 @@ public class LoginService {
     	catch(NoSuchElementException e){
     		return new LoginResponse(false, email,"User Not Found. Please sign up/check e-mail id.");
     	}
-    	
+    	if(login.getUserType()!=loginFromDB.getUserType()) {
+    		return new LoginResponse(false, email,"Please login as "+loginFromDB.getUserType()+"!!");
+    	}
         
-        	String rawPassword = login.getPassword();
-            String hashedPasswordFromDB = loginFromDB.getPassword();
+    	String rawPassword = login.getPassword();
+        String hashedPasswordFromDB = loginFromDB.getPassword();
+        
+        if (passwordEncoder.matches(rawPassword, hashedPasswordFromDB)) {
+        	loginResponse.setEmail(email);
+        	loginResponse.setSuccess(true);
+        	loginResponse.setUserName(username);
+        	loginResponse.setMessage("password Verified.");
+        	loginResponse.setUserType(loginFromDB.getUserType());
+        	loginResponse.setUserID(loginFromDB.getUserID());
+            return loginResponse;
             
-            if (passwordEncoder.matches(rawPassword, hashedPasswordFromDB)) {
-            	loginResponse.setEmail(email);
-            	loginResponse.setSuccess(true);
-            	loginResponse.setUserName(username);
-            	loginResponse.setMessage("password Verified.");
-                return loginResponse;
-                
-            } else {
-                return new LoginResponse(false, username,"Incorrect password.");
-            }
+        } else {
+            return new LoginResponse(false, username,"Incorrect password.");
+        }
         
 }
 
@@ -84,7 +88,7 @@ public class LoginService {
             email= loginFromDB.getEmail();
     	}
     	catch(NoSuchElementException e){
-    		return new LoginResponse(false, email,"User Not Found. Please sign up/check e-mail id.");
+    		return new LoginResponse(false, email,"User Not Found. Please SIGN UP/check e-mail id.");
     	}
     	
     	if(signUpDB.existsById(email)) {
@@ -126,6 +130,6 @@ public class LoginService {
 		 login= loginDB.findById(signUp.getEmail()).get();
 		 login.setPassword(hashedPassword);
 		 loginDB.save(login);
-		return new SignUpResponse(true, "Password reset successfull, Please Login to continue");
+		return new SignUpResponse(true, "Password reset successfull, Please SIGN IN to continue");
 	}
 }

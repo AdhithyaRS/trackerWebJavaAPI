@@ -10,6 +10,8 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.milky.trackerWeb.model.Login.UserType;
+
 
 @Component
 public class JwtUtils {
@@ -20,12 +22,12 @@ public class JwtUtils {
         this.SECRET_KEY = new SecretKeySpec(secretKey.getBytes(), "HmacSHA256");;
     }
 
-    public String generateToken(String userId, String roles) {
+    public String generateToken(int userID, UserType type) {
         Date expirationDate = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
 
         return Jwts.builder()
-                .setSubject(userId)
-                .claim("roles", roles)
+                .setSubject(Integer.toString(userID))
+                .claim("roles", type.name())
                 .setExpiration(expirationDate)
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();

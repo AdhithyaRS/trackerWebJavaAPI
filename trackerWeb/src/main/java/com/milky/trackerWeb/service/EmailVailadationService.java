@@ -81,7 +81,7 @@ public class EmailVailadationService {
 	}
 	
 	public boolean passwordVerification(String password) {
-		if (password!=null && password.length()>6) {
+		if (password!=null && password.length()>=7) {
 			return true;
 		}
 		

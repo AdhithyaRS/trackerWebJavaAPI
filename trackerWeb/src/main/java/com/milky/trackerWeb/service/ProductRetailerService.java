@@ -12,14 +12,13 @@ import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.stereotype.Component;
 
 import com.milky.trackerWeb.model.Product;
-import com.milky.trackerWeb.repository.ProductCustomRepo;
 import com.milky.trackerWeb.response.MainResponse;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 
 @Component
-public class ProductService implements ProductCustomRepo {
+public class ProductRetailerService {
 
     @Autowired
     @Qualifier("primaryMongoTemplate")
@@ -28,7 +27,7 @@ public class ProductService implements ProductCustomRepo {
     @Autowired
     MongoConverter converter;
 
-    @Override
+    
     public List<Product> findAllByEmail(String email) {
         final List<Product> product = new ArrayList<>();
 

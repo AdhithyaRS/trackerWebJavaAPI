@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.milky.trackerWeb.model.Login;
+import com.milky.trackerWeb.model.Login.UserType;
 import com.milky.trackerWeb.model.SignUp;
 import com.milky.trackerWeb.response.MainResponse;
 import com.milky.trackerWeb.service.JwtUtils;
@@ -27,26 +28,24 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 	@Autowired
-    private MainResponse mainResponse;
-	@Autowired
     private JwtUtils jwtUtils;
 	
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MainResponse> check(@RequestBody Login login, HttpServletResponse response)
     {
 		System.out.println(login.toString());
-		mainResponse = loginService.findByEmail(login);
+		MainResponse mainResponse = loginService.findByEmail(login);
 		
 		if (mainResponse.isSuccess()) {
-			String token =jwtUtils.generateToken(mainResponse.getEmail() , "user");
+			String token =jwtUtils.generateToken(mainResponse.getUserID() , mainResponse.getUserType());
 
 			
 	        Cookie jwtCookie = new Cookie("jwt_token", token);
 	        jwtCookie.setHttpOnly(true);
 
-	        
-	        jwtCookie.setPath("/");
-
+	        if(mainResponse.getUserType()==UserType.CUSTOMER) {
+	        	jwtCookie.setPath("/customer");
+	        }else jwtCookie.setPath("/retailer");
 	        
 	        response.addCookie(jwtCookie);
 			

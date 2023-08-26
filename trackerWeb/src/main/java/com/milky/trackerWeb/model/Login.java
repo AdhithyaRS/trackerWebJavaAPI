@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Component
 public class Login {
 
-
+	@Field("userType")
+	@JsonProperty("userType")
+    private UserType userType;
 	@Field("userName")
 	@JsonProperty("userName")
 	private String userName;
@@ -24,7 +26,28 @@ public class Login {
 	private String email;
 	@JsonProperty("reset")
 	private boolean reset;
-
+	@Field("userID")
+	@JsonProperty("userID")
+	private int userID;
+	
+	public int getUserID() {
+		return userID;
+	}
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+	
+	public enum UserType {
+	    RETAILER,
+	    CUSTOMER
+	}
+	
+	public UserType getUserType() {
+		return userType;
+	}
+	public void setUserType(UserType role) {
+		this.userType = role;
+	}
 	public Login() {
 		super();
 	}

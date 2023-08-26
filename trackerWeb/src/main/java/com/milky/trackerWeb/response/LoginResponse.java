@@ -3,9 +3,10 @@ package com.milky.trackerWeb.response;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.milky.trackerWeb.model.Login.UserType;
 
 @Component
-public class LoginResponse extends MainResponse{
+public class LoginResponse implements MainResponse{
 	@JsonProperty("success")
 	private boolean success;
 	@JsonProperty("userName")
@@ -14,7 +15,29 @@ public class LoginResponse extends MainResponse{
     private String message;
 	@JsonProperty("email")
 	private String email;
+	@JsonProperty("userType")
+	private UserType userType;
+	@JsonProperty("userID")
+	private int userID;
     
+	@Override
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
+	@Override
+	public UserType getUserType() {
+		return userType;
+	}
+	
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+
 	@Override
 	public String getEmail() {
 		return email;
@@ -57,6 +80,7 @@ public class LoginResponse extends MainResponse{
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
 
 	
 }
