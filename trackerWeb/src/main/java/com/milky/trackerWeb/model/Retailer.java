@@ -26,5 +26,26 @@ public class Retailer implements User{
 	@Field("accountStatus")
 	@JsonProperty("accountStatus")
 	private UserStatus status;
+	@Field("password")
+	@JsonProperty("password")
+	private String password;
+	@Field("password")
+	@JsonProperty("password")
+	private String password;
+	@Field("password")
+	@JsonProperty("password")
+	private String password;
+	@Field("password")
+	@JsonProperty("password")
+	private String password;
+	@Field("password")
+	@JsonProperty("password")
+	private String password;
+	@Field("password")
+	@JsonProperty("password")
+	private String password;
+	@Field("password")
+	@JsonProperty("password")
+	private String password;
 
 }
