@@ -40,7 +40,7 @@ public class EmailVailadationService {
 	}
 
 	
-    protected boolean sendVerificationEmail(String recipientEmail, int verificationCode) {
+    protected boolean sendVerificationEmail(String recipientEmail, String verificationCode) {
     	String emailSubject = "Email Verification";
         String emailContent = "Your verification code is: " + verificationCode + "\nExpiration time: 5 minutes";
 
@@ -71,6 +71,9 @@ public class EmailVailadationService {
         } catch (MessagingException e) {
             System.out.println("Error sending verification email: " + e.getMessage());
             return false;
+        }catch (Exception e) {
+        	System.out.println("Error sending verification email: " + e.getMessage());
+        	return false;
         }
     }
 

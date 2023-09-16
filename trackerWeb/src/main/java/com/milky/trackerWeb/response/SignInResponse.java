@@ -1,11 +1,10 @@
 package com.milky.trackerWeb.response;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class SignUpResponse implements MainResponse{
+public class SignInResponse implements MainResponse{
 	@JsonProperty("success")
 	private boolean success;
 	@JsonProperty("message")
@@ -22,12 +21,11 @@ public class SignUpResponse implements MainResponse{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public SignUpResponse(boolean success, String message) {
+	public SignInResponse(boolean success, String message) {
 		this.success = success;
 		this.message = message;
 	}
-	public SignUpResponse() {
-		super();
+	public SignInResponse() {
+		// TODO Auto-generated constructor stub
 	}
-
 }

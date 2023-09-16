@@ -2,6 +2,7 @@ package com.milky.trackerWeb.model;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @CompoundIndexes({
     @CompoundIndex(name = "uniqueIndex", def = "{'location': 1, 'productName': 1, 'type': 1}", unique = true)
 })
+@TypeAlias("")
 public class Product {
 	@Id
 	@JsonProperty("_id")

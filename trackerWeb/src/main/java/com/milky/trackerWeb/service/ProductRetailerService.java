@@ -31,9 +31,9 @@ public class ProductRetailerService {
     public List<Product> findAllByEmail(String email) {
         final List<Product> product = new ArrayList<>();
 
-        // Instead of getting the database and collection from the MongoClient, use the primaryMongoTemplate
+        
         MongoCollection<Document> collection = primaryMongoTemplate.getCollection("product");
-        Bson query = Filters.eq("email", email); // Use Filters.eq to create the equality query
+        Bson query = Filters.eq("email", email);
         FindIterable<Document> result = collection.find(query);
 
         result.forEach(doc -> product.add(converter.read(Product.class, doc)));
