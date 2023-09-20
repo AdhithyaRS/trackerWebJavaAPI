@@ -31,7 +31,6 @@ public class EmailVailadationService {
 	}
     
 
-
 	public boolean isEmailValid(String email) {
 		System.out.println("In regex class"+email);
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
