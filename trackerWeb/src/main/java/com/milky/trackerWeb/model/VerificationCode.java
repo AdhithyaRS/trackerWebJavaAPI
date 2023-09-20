@@ -3,19 +3,13 @@ package com.milky.trackerWeb.model;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.milky.trackerWeb.service.PhoneNumberValidationService;
 
 @Document(collection = "emailVerification")
-@TypeAlias("")
 public class VerificationCode {
 	
 	@Id
@@ -45,14 +39,15 @@ public class VerificationCode {
 	public VerificationCode() {
         super();
     }
-	public void setResetCode(String email, String phoneNumber, String verificationCode) {
+	public VerificationCode(String email, String phoneNumber, String verificationCode) {
 		this.phoneNumber = phoneNumber;
 		this.email=email;
 		this.verificationCode=verificationCode;
         this.expirationDate = calculateExpirationDate();
     }
-	public VerificationCode(String phoneNumber, String emailVerificationCode , String phoneNumberVerificationCode) {
+	public VerificationCode(String phoneNumber, String email,  String emailVerificationCode , String phoneNumberVerificationCode) {
         this.phoneNumber = phoneNumber;
+		this.email=email;
         this.emailVerificationCode = emailVerificationCode;
         this.phoneNumberVerificationCode = phoneNumberVerificationCode;
         this.expirationDate = calculateExpirationDate();

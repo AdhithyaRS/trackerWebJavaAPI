@@ -32,7 +32,7 @@ public class PhoneNumberValidationService {
 //			Message message = Message.creator(
 //			        new PhoneNumber(phoneNumber),
 //			        new PhoneNumber(twilioPhoneNumber),
-//			        "Your tracker.com mobile verification code is: " + code+" (Valid for 10 mins")
+//			        "Your tracker.com mobile verification code is: " + code+" (Valid for 5 mins)"
 //			    .create();
 //	
 //		    System.out.println(message.getSid());

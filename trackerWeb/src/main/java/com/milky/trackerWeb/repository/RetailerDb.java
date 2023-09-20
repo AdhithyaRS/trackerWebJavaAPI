@@ -7,6 +7,7 @@ import com.milky.trackerWeb.model.Retailer;
 
 public interface RetailerDb extends MongoRepository<Retailer, String> {
 	boolean existsByPhoneNumber(String phoneNumber);
+	boolean existsByEmail(String email);
 	Optional<Retailer> findByPhoneNumber(String phoneNumber);
 	Optional<Retailer> findByEmail(String phoneNumber);
 

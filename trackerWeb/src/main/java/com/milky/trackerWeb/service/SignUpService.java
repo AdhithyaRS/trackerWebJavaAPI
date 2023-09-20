@@ -55,14 +55,16 @@ public class SignUpService {
 		if(user.isReset()) {
 			if(registerJwtDb.existsByPhoneNumber(phoneNumber)) {
 				registerJwtDb.deleteByPhoneNumber(phoneNumber);
+			}else {
+				registerJwtDb.deleteByEmail(email);
 			}
 		}
 		if(!emailValidationService.isEmailValid(email)) {
 			return new SignUpResponse(false,"Please enter a valid e-mail address");
 		}
-		if(customerDb.existsById(email)) {
+		if(customerDb.existsByEmail(email)) {
 			return new SignUpResponse(false,"User already exist with this e-mail as Customer, Please Sign in!!");
-		}else if(retailerDb.existsById(email)) {
+		}else if(retailerDb.existsByEmail(email)) {
 			return new SignUpResponse(false,"User already exist with this e-mail as Retailer, Please Sign in!!");
 		}
 		if(!phoneNumberValidationService.isPhoneNumberValid(phoneNumber)) {
@@ -73,7 +75,7 @@ public class SignUpService {
 		}else if(customerDb.existsByPhoneNumber(phoneNumber)) {
 			return new SignUpResponse(false,"User already exist with this Phone Number as Customer, Please Sign in!!");
 		}
-		if(registerJwtDb.existsByPhoneNumber(phoneNumber)) {
+		if(registerJwtDb.existsByPhoneNumber(phoneNumber) || registerJwtDb.existsByEmail(email)) {
 			//registerJwt = registerJwtDb.findByPhoneNumber(user.getPhoneNumber()).orElse(null);
 			return new SignUpResponse(true,"Reset");
 		}
@@ -107,7 +109,11 @@ public class SignUpService {
 		registerJwt = registerJwtDb.findByPhoneNumber(user.getPhoneNumber()).orElse(null);
 		if(registerJwt==null || !registerJwt.getJwtToken().equals(jwtToken)) return new SignUpResponse(false, "Unauthorized");
 		if(verificationCodeDb.existsByPhoneNumber(phoneNumber)) {
+			System.out.println("In deleting process the existing codes: "+phoneNumber);
 			verificationCodeDb.deleteByPhoneNumber(phoneNumber);
+		}else {
+			System.out.println("In deleting process the existing codes with email: "+email);
+			verificationCodeDb.deleteByEmail(email);
 		}
 		String emailCode= ""+123456;//""+(random.nextInt(900000) + 100000);
 		signUpResponse.setSuccess(emailValidationService.sendVerificationEmail(email ,emailCode));
@@ -121,7 +127,7 @@ public class SignUpService {
 				signUpResponse.setMessage("Error sending verification code to Phone Number, retry again later");
 			}else {
 				try {
-	                verificationCodeDb.save(new VerificationCode(phoneNumber, emailCode, phoneNumberCode));
+	                verificationCodeDb.save(new VerificationCode(phoneNumber,email, emailCode, phoneNumberCode));
 	                signUpResponse.setMessage("Verification Codes sent successfully to Mobile Number And email-id");
 	            } catch (Exception e) {
 	                signUpResponse.setSuccess(false);

@@ -42,7 +42,7 @@ public class EmailVailadationService {
 	
     protected boolean sendVerificationEmail(String recipientEmail, String verificationCode) {
     	String emailSubject = "Email Verification";
-        String emailContent = "Your verification code is: " + verificationCode + "\nExpiration time: 5 minutes";
+        String emailContent = "Your tracker.com email verification code is: " + verificationCode+" (Valid for 5 mins)";
 
         System.out.println("In sendVerificationEmail");
         Properties properties = new Properties();

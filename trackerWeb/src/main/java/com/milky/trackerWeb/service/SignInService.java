@@ -19,7 +19,6 @@ import com.milky.trackerWeb.repository.RetailerDb;
 import com.milky.trackerWeb.repository.VerificationCodeDb;
 import com.milky.trackerWeb.response.MainResponse;
 import com.milky.trackerWeb.response.SignInResponse;
-import com.milky.trackerWeb.response.SignUpResponse;
 import com.mongodb.DuplicateKeyException;
 import com.mongodb.MongoException;
 import com.mongodb.MongoExecutionTimeoutException;
@@ -61,10 +60,18 @@ public class SignInService {
 		            return new SignInResponse(false, "Account is locked!! Please contact customer service");
 		        }
 		        String hashedPassword = customer.getPassword();
-		        if (!passwordEncoder.matches(rawPassword, hashedPassword)) {
-		        	user=customer;
-		            return new SignInResponse(false, "Incorrect password!!");
+		        try {
+		        	if (!passwordEncoder.matches(rawPassword, hashedPassword)) {
+		        		user.setEmail(customer.getEmail());
+			        	user.setPhoneNumber(customer.getPhoneNumber());
+			            return new SignInResponse(false, "Incorrect password!!");
+			        }
+		        }catch(IllegalArgumentException e) {
+		        	user.setEmail(customer.getEmail());
+		        	user.setPhoneNumber(customer.getPhoneNumber());
+		        	return new SignInResponse(false, "Incorrect password!!");
 		        }
+		        
 		    } else {
 		        Retailer retailer = email == null ? retailerDb.findByPhoneNumber(phoneNumber).orElse(null) : retailerDb.findByEmail(email).orElse(null);
 		        if(retailer == null) {
@@ -73,13 +80,20 @@ public class SignInService {
 		            return new SignInResponse(false, "Account is locked!! Please contact customer service");
 		        }
 		        String hashedPassword = retailer.getPassword();
-		        if (!passwordEncoder.matches(rawPassword, hashedPassword)) {
-		        	user=retailer;
-		            return new SignInResponse(false, "Incorrect password!!");
+		        try {
+		        	if (!passwordEncoder.matches(rawPassword, hashedPassword)) {
+		        		user.setEmail(retailer.getEmail());
+			        	user.setPhoneNumber(retailer.getPhoneNumber());
+			            return new SignInResponse(false, "Incorrect password!!");
+			        }
+		        }catch(IllegalArgumentException e) {
+		        	user.setEmail(retailer.getEmail());
+		        	user.setPhoneNumber(retailer.getPhoneNumber());
+		        	return new SignInResponse(false, "Incorrect password!!");
 		        }
 		    }
 		    String token =jwtUtils.generateSigninToken(user.getPhoneNumber() , user.getUserType());
-			Cookie jwtCookie = new Cookie("jwt_token", token);
+			Cookie jwtCookie = new Cookie("jwt_signIn_token", token);
 	        jwtCookie.setHttpOnly(true);
 	        jwtCookie.setPath("/");
 	        response.addCookie(jwtCookie);
@@ -116,28 +130,34 @@ public class SignInService {
 	}
 
 	public MainResponse passwordReset(User user, HttpServletResponse response) {
+		System.out.println("before "+user.toString());
 		SignInResponse signInResponse = (SignInResponse)verifyUser(user, null);
 		if(!signInResponse.getMessage().equals("Incorrect password!!")) {
 			return signInResponse;
 		}
+		System.out.println("after "+user.toString());
+		String email = user.getEmail();
+		String phoneNumber = user.getPhoneNumber();
 		if(user.isReset()) {
-			if(registerJwtDb.existsByPhoneNumber(user.getPhoneNumber())) {
-				registerJwtDb.deleteByPhoneNumber(user.getPhoneNumber());
+			if(registerJwtDb.existsByPhoneNumber(phoneNumber)) {
+				registerJwtDb.deleteByPhoneNumber(phoneNumber);
+			}else {
+				registerJwtDb.deleteByEmail(email);
 			}
 		}
 		
-		if(registerJwtDb.existsByPhoneNumber(user.getPhoneNumber())) {
+		if(registerJwtDb.existsByPhoneNumber(phoneNumber) || registerJwtDb.existsByEmail(email)) {
 			//registerJwt = registerJwtDb.findByPhoneNumber(user.getPhoneNumber()).orElse(null);
 			return new SignInResponse(true,"Reset");
 		}
 		String token;
 		try {
-			token =jwtUtils.generateRegistrationToken(user.getPhoneNumber() , user.getUserType());
+			token =jwtUtils.generateRegistrationToken(phoneNumber , user.getUserType());
 		}catch (Exception e) {
 		    return new SignInResponse(false, "An unknown error occurred.");
 		}
 		try {
-			registerJwtDb.save(new RegisterJwt(user.getPhoneNumber(),user.getEmail(), token));
+			registerJwtDb.save(new RegisterJwt(phoneNumber, email, token));
 		}catch (DuplicateKeyException e) {
 			return new SignInResponse(false,"Password reset process already on-going");
 		}catch (Exception e) {
@@ -169,6 +189,8 @@ public class SignInService {
 		
 		if(verificationCodeDb.existsByPhoneNumber(user.getPhoneNumber())) {
 			verificationCodeDb.deleteByPhoneNumber(user.getPhoneNumber());
+		}else {
+			verificationCodeDb.deleteByEmail(user.getEmail());
 		}
 		String verificationCode;
 		if(phoneNumber==null) {
@@ -187,9 +209,7 @@ public class SignInService {
 			}
 		}
 		try {
-			VerificationCode setVerificationCode= new VerificationCode();
-			setVerificationCode.setResetCode(user.getEmail(),user.getPhoneNumber(), verificationCode);
-            verificationCodeDb.save(setVerificationCode);
+            verificationCodeDb.save(new VerificationCode(user.getEmail(),user.getPhoneNumber(), verificationCode));
         } catch (Exception e) {
         	signInResponse.setSuccess(false);
         	signInResponse.setMessage("Error saving verification codes to the database");

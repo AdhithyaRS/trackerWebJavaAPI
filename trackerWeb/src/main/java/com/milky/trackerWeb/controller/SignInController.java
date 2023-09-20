@@ -32,7 +32,7 @@ public class SignInController {
 	@PostMapping( produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MainResponse> verifyUser(@RequestBody User user, HttpServletResponse response)
     {
-           
+		System.out.println(user.toString());
         return ResponseEntity.ok(signInService.verifyUser(user,response));
         
     }

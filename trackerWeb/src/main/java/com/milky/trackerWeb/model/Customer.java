@@ -1,7 +1,6 @@
 package com.milky.trackerWeb.model;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -11,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Document(collection = "customer")
 @JsonTypeName("CUSTOMER")
-@TypeAlias("")
 public class Customer implements User{
 	
 	@Id

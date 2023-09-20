@@ -33,9 +33,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<SecondJwtFilter> secondJwtFilter() {
+    public FilterRegistrationBean<SecondJwtFilter> secondJwtFilter(JwtUtils jwtUtils) {
         FilterRegistrationBean<SecondJwtFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new SecondJwtFilter());
+        registrationBean.setFilter(new SecondJwtFilter(jwtUtils));
         registrationBean.addUrlPatterns("/signIn/*");
         registrationBean.setOrder(2); // This sets the order in which filters are invoked
         return registrationBean;

@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -13,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Document(collection = "registerJwt")
-@TypeAlias("")
 public class RegisterJwt {
 	
 	@Id
