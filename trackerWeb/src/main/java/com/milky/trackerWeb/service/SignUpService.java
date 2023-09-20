@@ -18,7 +18,6 @@ import com.milky.trackerWeb.repository.RegisterJwtDb;
 import com.milky.trackerWeb.repository.RetailerDb;
 import com.milky.trackerWeb.repository.VerificationCodeDb;
 import com.milky.trackerWeb.response.MainResponse;
-import com.milky.trackerWeb.response.SignInResponse;
 import com.milky.trackerWeb.response.SignUpResponse;
 import com.mongodb.DuplicateKeyException;
 
@@ -115,13 +114,13 @@ public class SignUpService {
 			System.out.println("In deleting process the existing codes with email: "+email);
 			verificationCodeDb.deleteByEmail(email);
 		}
-		String emailCode= ""+123456;//""+(random.nextInt(900000) + 100000);
+		String emailCode= ""+(random.nextInt(900000) + 100000);
 		signUpResponse.setSuccess(emailValidationService.sendVerificationEmail(email ,emailCode));
 		if(!signUpResponse.isSuccess()) {
 			signUpResponse.setMessage("Error sending verification code to email-id, retry again later");
 			return signUpResponse;
 		}else {
-			String phoneNumberCode= ""+123456;//random.nextInt(900000) + 100000;
+			String phoneNumberCode= ""+(random.nextInt(900000) + 100000);
 			signUpResponse.setSuccess(phoneNumberValidationService.sendVerificationPhoneNumber(phoneNumber ,phoneNumberCode));
 			if(!signUpResponse.isSuccess()) {
 				signUpResponse.setMessage("Error sending verification code to Phone Number, retry again later");

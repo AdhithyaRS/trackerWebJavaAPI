@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 
 @Component
 public class PhoneNumberValidationService {
@@ -29,13 +31,13 @@ public class PhoneNumberValidationService {
 		try {
 			
 		
-//			Message message = Message.creator(
-//			        new PhoneNumber(phoneNumber),
-//			        new PhoneNumber(twilioPhoneNumber),
-//			        "Your tracker.com mobile verification code is: " + code+" (Valid for 5 mins)"
-//			    .create();
-//	
-//		    System.out.println(message.getSid());
+			Message message = Message.creator(
+			        new PhoneNumber(phoneNumber),
+			        new PhoneNumber(twilioPhoneNumber),
+			        "Your tracker.com mobile verification code is: " + code+" (Valid for 5 mins)"
+			    ).create();
+	
+		    System.out.println(message.getSid());
 			System.out.println("code sent successfully to mobile phone number");
 			return true;
 		} catch(Exception e) {

@@ -2,6 +2,7 @@ package com.milky.trackerWeb.service;
 
 
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,6 +47,8 @@ public class SignInService {
 	private PhoneNumberValidationService phoneNumberValidationService;
 	@Autowired
 	private RegisterJwtDb registerJwtDb;
+	@Autowired
+	private Random random;
 
 	public MainResponse verifyUser(User user, HttpServletResponse response) {
 		String rawPassword = user.getPassword();
@@ -194,14 +197,14 @@ public class SignInService {
 		}
 		String verificationCode;
 		if(phoneNumber==null) {
-			verificationCode= ""+123456;//""+(random.nextInt(900000) + 100000);
+			verificationCode= ""+(random.nextInt(900000) + 100000);
 			signInResponse.setSuccess(emailValidationService.sendVerificationEmail(email ,verificationCode));
 			if(!signInResponse.isSuccess()) {
 				signInResponse.setMessage("Error sending verification code to email-id, retry again later");
 				return signInResponse;
 			}
 		}else {
-			verificationCode= ""+123456;//random.nextInt(900000) + 100000;
+			verificationCode= ""+(random.nextInt(900000) + 100000);
 			signInResponse.setSuccess(phoneNumberValidationService.sendVerificationPhoneNumber(phoneNumber ,verificationCode));
 			if(!signInResponse.isSuccess()) {
 				signInResponse.setMessage("Error sending verification code to Phone Number, retry again later");
