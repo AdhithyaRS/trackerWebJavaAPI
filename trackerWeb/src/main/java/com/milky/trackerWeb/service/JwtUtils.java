@@ -61,7 +61,7 @@ public class JwtUtils {
 	    }
     }
 
-    public void validateToken(String token) throws ExpiredJwtException, MalformedJwtException {
+    public void validateToken(String token) throws Exception {
         try {
             Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
             if (claimsJws.getBody().getExpiration().before(new Date())) {
@@ -74,6 +74,7 @@ public class JwtUtils {
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Error validating token");
+            throw e;
         }
     }
     
@@ -81,11 +82,14 @@ public class JwtUtils {
     public String getPhoneNumberFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody().getSubject();
     }
+    public String getUserTypeFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody().get("roles", String.class);
+    }
 
 	public String generateSigninToken(String phoneNumber, UserType type) throws Exception{
 		try {
 			Date now = new Date(); // Capture the current time
-	        Date expirationDate = new Date(System.currentTimeMillis() + (type==UserType.CUSTOMER? EXPIRATION_TIME*24*7:EXPIRATION_TIME*24));
+	        Date expirationDate = new Date(System.currentTimeMillis() + (type==UserType.CUSTOMER? EXPIRATION_TIME/10:EXPIRATION_TIME/10));
 
 	        return Jwts.builder()
 	                .setSubject(phoneNumber)

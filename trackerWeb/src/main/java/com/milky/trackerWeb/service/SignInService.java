@@ -96,9 +96,17 @@ public class SignInService {
 		        }
 		    }
 		    String token =jwtUtils.generateSigninToken(user.getPhoneNumber() , user.getUserType());
-			Cookie jwtCookie = new Cookie("jwt_signIn_token", token);
+		    Cookie jwtCookie ;
+			if(user.getUserType() == UserType.CUSTOMER) {
+				jwtCookie = new Cookie("jwt_signIn_token_customer", token);
+		        jwtCookie.setPath("/");
+			}else {
+				jwtCookie = new Cookie("jwt_signIn_token_retailer", token);
+		        jwtCookie.setPath("/retailer");
+			}
+			// Set the lifespan of the cookie
+			jwtCookie.setMaxAge(360);
 	        jwtCookie.setHttpOnly(true);
-	        jwtCookie.setPath("/");
 	        response.addCookie(jwtCookie);
 			return new SignInResponse(true, "Verification successfull");
 		} catch (NoSuchElementException e) {
@@ -204,7 +212,7 @@ public class SignInService {
 				return signInResponse;
 			}
 		}else {
-			verificationCode= ""+(random.nextInt(900000) + 100000);
+			verificationCode="123456";// ""+(random.nextInt(900000) + 100000);
 			signInResponse.setSuccess(phoneNumberValidationService.sendVerificationPhoneNumber(phoneNumber ,verificationCode));
 			if(!signInResponse.isSuccess()) {
 				signInResponse.setMessage("Error sending verification code to Phone Number, retry again later");

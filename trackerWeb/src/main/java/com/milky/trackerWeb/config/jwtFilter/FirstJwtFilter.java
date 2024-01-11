@@ -65,6 +65,10 @@ public class FirstJwtFilter implements Filter {
                             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                             res.getWriter().write("Invalid token format");
                             return;
+                        } catch (Exception e) {
+                            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            res.getWriter().write("Unknown Error");
+                            return;
                         }
                     }
                 }

@@ -38,10 +38,7 @@ public class SecondJwtFilter implements Filter {
 	        res.setStatus(HttpServletResponse.SC_OK);
 	        return;
 	    }
-//		System.out.println("Request Method = " + req.getMethod() + ", URL = " + req.getRequestURL());
-//		String body = IOUtils.toString(req.getReader());
-//        
-//        System.out.println("Raw JSON: " + body);
+
         String path = req.getRequestURI();
 
         if (!(path.equals("/signIn") || path.equals("/signIn/passwordreset"))) {
@@ -63,6 +60,10 @@ public class SecondJwtFilter implements Filter {
                         } catch (MalformedJwtException e) {
                             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                             res.getWriter().write("Invalid token format");
+                            return;
+                        } catch (Exception e) {
+                            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            res.getWriter().write("Unknown Error");
                             return;
                         }
                     }

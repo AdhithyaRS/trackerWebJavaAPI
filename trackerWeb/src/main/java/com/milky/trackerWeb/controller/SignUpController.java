@@ -34,7 +34,7 @@ public class SignUpController {
     public ResponseEntity<MainResponse> verifyUser(@RequestBody User user, HttpServletResponse response)
     {
 		try {
-	        // Log or debug to see if the JSON is what you expect
+	        // Log to see if the JSON is what you expect
 	        System.out.println("Received JSON: " + new ObjectMapper().writeValueAsString(user));
 	        System.out.println(user.toString());
 

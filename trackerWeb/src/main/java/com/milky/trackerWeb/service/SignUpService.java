@@ -120,7 +120,7 @@ public class SignUpService {
 			signUpResponse.setMessage("Error sending verification code to email-id, retry again later");
 			return signUpResponse;
 		}else {
-			String phoneNumberCode= ""+(random.nextInt(900000) + 100000);
+			String phoneNumberCode=""+(random.nextInt(900000) + 100000);
 			signUpResponse.setSuccess(phoneNumberValidationService.sendVerificationPhoneNumber(phoneNumber ,phoneNumberCode));
 			if(!signUpResponse.isSuccess()) {
 				signUpResponse.setMessage("Error sending verification code to Phone Number, retry again later");

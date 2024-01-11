@@ -162,6 +162,7 @@ public class Retailer implements User{
 	}
 	
 	
+	
 	@Override
 	public String toString() {
 		return "Retailer [_id=" + _id + ", userType=" + userType + ", userName=" + userName + ", password=" + password
