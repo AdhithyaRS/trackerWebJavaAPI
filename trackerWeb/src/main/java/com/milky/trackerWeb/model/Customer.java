@@ -26,7 +26,7 @@ public class Customer implements User{
 	@Indexed(unique = true)
 	//@JsonProperty("email")
 	private String email;
-	@JsonProperty("reset")
+	//@JsonProperty("reset")
 	private boolean reset;
 	@Field("accountStatus")
 	//@JsonProperty("accountStatus")
